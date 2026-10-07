@@ -1,0 +1,29 @@
+body{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, #3d2318 0%, #1a0c07 100%);
+    overflow: hidden;
+}
+
+.title{
+    font-size: clamp(7rem, 15vw, 7rem);
+    font-weight: 900;
+    letter-spacing: 0.1rem;
+    background-image: url("coffee1.jpg");
+    background-size: 200% auto;
+    background-position: no-repeat;
+    color: transparent;
+    -webkit-background-clip: text;
+    animation: flowImage 5s linear infinite;
+}
+
+@keyframes flowImage{
+    from{
+        background-position: 0% 50%;
+    }
+    to{
+        background-position: 200% 50%;
+    }
+}

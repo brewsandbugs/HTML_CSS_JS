@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify-Style Pure HTML & CSS Music Player</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- HTML5 Audio element loaded with a royalty-free creative commons audio sample -->
+    <audio id="audio-track" loop>
+        <source src="tu-na-samjhe-raja-lyrics_ygEBo8nM.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Checkbox controlling Pure CSS Play/Pause state without JS -->
+    <input type="checkbox" id="play-toggle" onchange="document.getElementById('audio-track').paused ? document.getElementById('audio-track').play() : document.getElementById('audio-track').pause();">
+
+    <div class="player-container relative w-full max-w-md bg-[#121212] rounded-3xl overflow-hidden shadow-2xl border border-zinc-800 text-white transition-all duration-500">
+        
+        <!-- Top App Bar Header -->
+        <div class="flex items-center justify-between px-6 pt-6 pb-2">
+            <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-[#1ed760] inline-block animate-pulse"></span>
+                <span class="text-xs font-bold uppercase tracking-widest text-zinc-400">Spotify Live Preview</span>
+            </div>
+            <svg class="w-5 h-5 text-zinc-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+        </div>
+
+        <!-- Main Content Area: Artwork & Live Synchronized Lyrics Side-by-Side / Stacked -->
+        <div class="px-6 py-4 flex flex-col items-center">
+            
+            <!-- Vinyl & Album Artwork Stack -->
+            <div class="relative w-56 h-56 my-2 flex items-center justify-center">
+                <!-- Hidden Vinyl Record sliding out behind art when playing -->
+                <div class="vinyl-record absolute -right-6 w-48 h-48 rounded-full bg-zinc-950 border-4 border-zinc-800 shadow-2xl hidden z-0 items-center justify-center">
+                    <div class="w-16 h-16 rounded-full bg-[#1ed760] border-4 border-zinc-900 flex items-center justify-center">
+                        <div class="w-4 h-4 rounded-full bg-black"></div>
+                    </div>
+                </div>
+
+                <!-- Album Art Thumbnail -->
+                <div class="album-art relative z-10 w-52 h-52 rounded-2xl overflow-hidden shadow-xl transition-all duration-500 bg-zinc-800">
+                    <img src="thumbnail.jpg" alt="Album Art" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x400/27272a/ffffff?text=Album+Art'">
+                    <!-- Subtle dark gradient overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                </div>
+            </div>
+
+            <!-- Track Info & Like Button -->
+            <div class="w-full flex items-center justify-between mt-4">
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white truncate max-w-[260px]">Tu Na Samjhe</h1>
+                    <p class="text-sm font-medium text-zinc-400 mt-0.5">Hellow Raja and MaxxTurnn ‧ 2025</p>
+                </div>
+                <label for="like-toggle" class="cursor-pointer text-zinc-400 hover:text-[#1ed760] transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                </label>
+            </div>
+
+            <!-- Spotify Live Lyrics Box -->
+            <div class="w-full h-36 bg-[#18181b]/80 rounded-2xl mt-5 p-4 relative overflow-hidden border border-zinc-800/60 shadow-inner flex flex-col items-center">
+                <!-- Top/Bottom gradient fade for lyrics immersion -->
+                <div class="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-[#18181b] to-transparent z-10 pointer-events-none"></div>
+                <div class="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#18181b] to-transparent z-10 pointer-events-none"></div>
+
+                <div class="lyrics-container w-full text-center space-y-6 text-base font-bold transition-all duration-300 transform translate-y-[120px]">
+                    <div class="l-1 text-zinc-300 transition-all duration-300">Ghadi je hath mein baandhi, time dekhna aaya ni ke</div>
+                    <div class="l-2 text-zinc-300 transition-all duration-300">Ghar ne time te aana, ghr ke aa ne samjhaya ni ke</div>
+                    <div class="l-3 text-zinc-300 transition-all duration-300">Baant dekhti naar teri, tu khyaal rakhiyo btaya ni ?</div>
+                    <div class="l-4 text-zinc-300 transition-all duration-300">Fir mu chhota sa karke, banke bhola tu khahega</div>
+                    <div class="l-5 text-zinc-300 transition-all duration-300">Hr baat pe ladti kyu, bora vi mera khyaal na krdi tu</div>
+                    <div class="l-6 text-zinc-300 transition-all duration-300">Krega fir hath chhudavan te, je me vi is baar akadgi nyu</div>
+                    <div class="l-7 text-zinc-300 transition-all duration-300">jaake ...</div>
+                </div>
+            </div>
+
+            <!-- Progress Bar Section -->
+            <div class="w-full mt-5">
+                <div class="h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden cursor-pointer relative">
+                    <div class="progress-bar-fill h-full bg-[#1ed760] rounded-full w-0"></div>
+                </div>
+                <div class="flex justify-between items-center text-[11px] font-semibold text-zinc-400 mt-1.5">
+                    <span class="time-current">0:00</span>
+                    <span class="time-total">0:30</span>
+                </div>
+            </div>
+
+            <!-- Playback Control Buttons -->
+            <div class="w-full flex items-center justify-between px-4 mt-2 mb-2">
+                <!-- Shuffle -->
+                <button class="text-zinc-400 hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l4-4m0 0l4 4m-4-4v12"/></svg>
+                </button>
+                <!-- Previous Track -->
+                <button class="text-zinc-200 hover:text-white transition-transform active:scale-95">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                </button>
+
+                <!-- Interactive Play / Pause Button Label linked to checkbox -->
+                <label for="play-toggle" class="cursor-pointer w-14 h-14 rounded-full bg-[#1ed760] hover:scale-105 transition-all shadow-lg flex items-center justify-center text-black">
+                    <!-- Play Icon -->
+                    <svg class="play-icon w-7 h-7 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <!-- Pause Icon -->
+                    <svg class="pause-icon w-7 h-7 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </label>
+
+                <!-- Next Track -->
+                <button class="text-zinc-200 hover:text-white transition-transform active:scale-95">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                </button>
+                <!-- Repeat -->
+                <button class="text-zinc-400 hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Spotify Footer Branding -->
+        <div class="bg-zinc-950 py-3 text-center border-t border-zinc-900 flex items-center justify-center space-x-1.5">
+            <span class="text-[11px] font-semibold text-zinc-400">Streamed with</span>
+            <span class="text-[11px] font-bold text-[#1ed760] tracking-wide">Spotify Pure CSS</span>
+        </div>
+
+    </div>
+
+    <script>
+        const audio = document.getElementById('audio-track');
+        const container = document.querySelector('.lyrics-container');
+        
+        // Increased negative offsets (-px) make the text scroll up much faster
+        const timeline = [
+            { time: 0, el: document.querySelector('.l-1'), offset: 40 },
+            { time: 4, el: document.querySelector('.l-2'), offset: -20 },
+            { time: 7, el: document.querySelector('.l-3'), offset: -80 },
+            { time: 11, el: document.querySelector('.l-4'), offset: -140 },
+            { time: 14, el: document.querySelector('.l-5'), offset: -200 },
+            { time: 21, el: document.querySelector('.l-6'), offset: -260 },
+            { time: 29, el: document.querySelector('.l-7'), offset: -320 }
+        ];
+
+        audio.addEventListener('timeupdate', () => {
+            let currentTime = audio.currentTime;
+            
+            timeline.forEach((item, index) => {
+                let nextTime = timeline[index + 1] ? timeline[index + 1].time : 999;
+                
+                if (currentTime >= item.time && currentTime < nextTime) {
+                    // Reset all lines to dim state
+                    timeline.forEach(t => {
+                        t.el.style.color = '#71717a';
+                        t.el.style.transform = 'scale(1)';
+                        t.el.style.fontWeight = '400';
+                    });
+                    
+                    // Highlight current line
+                    item.el.style.color = '#1ed760';
+                    item.el.style.transform = 'scale(1.05)';
+                    item.el.style.fontWeight = '700';
+                    
+                    // Scroll container smoothly to target offset
+                    container.style.transform = `translateY(${item.offset}px)`;
+                }
+            });
+        });
+
+        // Progress bar sync
+        const progressFill = document.querySelector('.progress-bar-fill');
+        audio.addEventListener('timeupdate', () => {
+            if (!isNaN(audio.duration)) {
+                let percentage = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = percentage + '%';
+                
+                let mins = Math.floor(audio.currentTime / 60);
+                let secs = Math.floor(audio.currentTime % 60);
+                document.querySelector('.time-current').textContent = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: radial-gradient(circle at center, #1b263b 0%, #080d1a 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.container {
+  width: 380px;
+  height: 520px;
+}
+
+.rose-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Stem Animation */
+.stem {
+  fill: none;
+  stroke: url(#stemGrad);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation: growStem 2s ease-in-out forwards;
+}
+
+@keyframes growStem {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Thorns & Sepal Animation */
+.thorns path, .sepal path {
+  opacity: 0;
+  transform-origin: 200px 300px;
+  transform: scale(0);
+  animation: popIn 0.8s ease-out 1.6s forwards;
+}
+
+/* Leaf Animation */
+.leaf {
+  opacity: 0;
+  transform: scale(0);
+  animation: popIn 1s ease-out forwards;
+}
+
+.left-leaf {
+  transform-origin: 197px 390px;
+  animation-delay: 1.2s;
+}
+
+.right-leaf {
+  transform-origin: 201px 320px;
+  animation-delay: 1.5s;
+}
+
+@keyframes popIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Realistic Blooming Delays */
+.petal {
+  opacity: 0;
+  transform-origin: 200px 220px;
+  transform: scale(0.1) rotate(-10deg);
+  animation: bloomRealistic 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.p-center  { animation-delay: 2.0s; }
+.p-core-1  { animation-delay: 2.2s; }
+.p-core-2  { animation-delay: 2.3s; }
+.p-mid-1   { animation-delay: 2.5s; }
+.p-mid-2   { animation-delay: 2.6s; }
+.p-outer-3 { animation-delay: 2.8s; }
+.p-outer-4 { animation-delay: 2.9s; }
+.p-outer-1 { animation-delay: 3.1s; }
+.p-outer-2 { animation-delay: 3.2s; }
+
+/* Grass Base Styles & Animations */
+.grass-group .blade {
+  transform-origin: bottom center;
+  opacity: 0;
+  transform: scaleY(0);
+  animation: growGrass 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards,
+             sway 4s ease-in-out infinite alternate;
+}
+
+/* Stagger Grass Growth Timings */
+.b1 { animation-delay: 0.1s, 1.3s; transform-origin: 87px 500px; }
+.b2 { animation-delay: 0.3s, 1.5s; transform-origin: 120px 500px; }
+.b3 { animation-delay: 0.2s, 1.4s; transform-origin: 147px 500px; }
+.b4 { animation-delay: 0.4s, 1.6s; transform-origin: 177px 500px; }
+.b5 { animation-delay: 0.2s, 1.4s; transform-origin: 222px 500px; }
+.b6 { animation-delay: 0.5s, 1.7s; transform-origin: 252px 500px; }
+.b7 { animation-delay: 0.3s, 1.5s; transform-origin: 277px 500px; }
+.b8 { animation-delay: 0.1s, 1.3s; transform-origin: 307px 500px; }
+
+@keyframes growGrass {
+  0% {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+/* Subtle Gentle Wind Swaying Animation */
+@keyframes sway {
+  0% {
+    transform: scaleY(1) rotate(0deg);
+  }
+  50% {
+    transform: scaleY(1) rotate(2.5deg);
+  }
+  100% {
+    transform: scaleY(1) rotate(-2deg);
+  }
+}
+
+@keyframes bloomRealistic {
+  0% {
+    opacity: 0;
+    transform: scale(0.1) rotate(-10deg);
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}

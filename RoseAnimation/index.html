@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Realistic Growing Rose Animation</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <svg class="rose-svg" viewBox="0 0 400 550" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Shading Gradients -->
+        <radialGradient id="petalGrad1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ff2a4b"/>
+          <stop offset="60%" stop-color="#b50e29"/>
+          <stop offset="100%" stop-color="#5e000f"/>
+        </radialGradient>
+
+        <radialGradient id="petalGrad2" cx="40%" cy="30%" r="60%">
+          <stop offset="0%" stop-color="#ff4d6d"/>
+          <stop offset="70%" stop-color="#c91836"/>
+          <stop offset="100%" stop-color="#6b0213"/>
+        </radialGradient>
+
+        <linearGradient id="stemGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#2d5a27"/>
+          <stop offset="50%" stop-color="#4c8c43"/>
+          <stop offset="100%" stop-color="#1b3d17"/>
+        </linearGradient>
+
+        <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#4e8a44"/>
+          <stop offset="50%" stop-color="#2d5e26"/>
+          <stop offset="100%" stop-color="#143310"/>
+        </linearGradient>
+
+        <!-- Grass Gradient -->
+        <linearGradient id="grassGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" stop-color="#122a0e"/>
+          <stop offset="70%" stop-color="#2d5e26"/>
+          <stop offset="100%" stop-color="#559948"/>
+        </linearGradient>
+
+        <!-- Soft Shadow Filter -->
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="1" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.4"/>
+        </filter>
+      </defs>
+
+      <!-- Stem -->
+      <path class="stem" d="M 200 500 Q 190 380 200 230" />
+
+      <!-- Thorns -->
+      <g class="thorns">
+        <path d="M 196 420 Q 180 425 183 435 Q 195 430 197 424 Z" fill="#2d5a27" />
+        <path d="M 202 340 Q 218 343 215 353 Q 203 348 201 342 Z" fill="#2d5a27" />
+      </g>
+
+      <!-- Left Leaf Group -->
+      <g class="leaf left-leaf" filter="url(#shadow)">
+        <path d="M 197 390 Q 130 350 90 385 Q 140 420 197 390 Z" fill="url(#leafGrad)" />
+        <path d="M 197 390 Q 140 382 90 385" fill="none" stroke="#68b05c" stroke-width="1.5" opacity="0.7"/>
+      </g>
+
+      <!-- Right Leaf Group -->
+      <g class="leaf right-leaf" filter="url(#shadow)">
+        <path d="M 201 320 Q 270 280 310 315 Q 260 350 201 320 Z" fill="url(#leafGrad)" />
+        <path d="M 201 320 Q 260 312 310 315" fill="none" stroke="#68b05c" stroke-width="1.5" opacity="0.7"/>
+      </g>
+
+      <!-- Sepal Base -->
+      <g class="sepal">
+        <path d="M 185 235 C 165 250 150 270 140 260 C 165 240 180 230 190 232 Z" fill="#2d5a27" />
+        <path d="M 215 235 C 235 250 250 270 260 260 C 235 240 220 230 210 232 Z" fill="#2d5a27" />
+        <path d="M 200 235 C 200 265 195 285 190 290 C 195 270 200 250 200 235 Z" fill="#1b3d17" />
+      </g>
+
+      <!-- Blooming Rose Flower -->
+      <g class="flower" filter="url(#shadow)">
+        <path class="petal p-outer-1" d="M 200 230 C 120 230 90 140 140 100 C 180 150 200 200 200 230 Z" fill="url(#petalGrad1)" />
+        <path class="petal p-outer-2" d="M 200 230 C 280 230 310 140 260 100 C 220 150 200 200 200 230 Z" fill="url(#petalGrad1)" />
+        <path class="petal p-outer-3" d="M 200 235 C 130 260 110 180 160 130 C 185 170 200 210 200 235 Z" fill="url(#petalGrad2)" />
+        <path class="petal p-outer-4" d="M 200 235 C 270 260 290 180 240 130 C 215 170 200 210 200 235 Z" fill="url(#petalGrad2)" />
+        <path class="petal p-mid-1" d="M 200 225 C 140 210 130 130 170 95 C 190 130 200 180 200 225 Z" fill="url(#petalGrad1)" />
+        <path class="petal p-mid-2" d="M 200 225 C 260 210 270 130 230 95 C 210 130 200 180 200 225 Z" fill="url(#petalGrad1)" />
+        <path class="petal p-core-1" d="M 200 215 C 160 190 160 120 190 105 C 205 130 200 180 200 215 Z" fill="url(#petalGrad2)" />
+        <path class="petal p-core-2" d="M 200 215 C 240 190 240 120 210 105 C 195 130 200 180 200 215 Z" fill="url(#petalGrad2)" />
+        <path class="petal p-center" d="M 200 200 C 180 170 180 130 200 120 C 220 130 220 170 200 200 Z" fill="#7a0314" />
+      </g>
+
+      <!-- Animated Grass Field -->
+      <g class="grass-group" fill="url(#grassGrad)">
+        <path class="blade b1" d="M 80 500 Q 60 440 40 430 Q 70 450 95 500 Z" />
+        <path class="blade b2" d="M 110 500 Q 120 420 100 400 Q 125 430 130 500 Z" />
+        <path class="blade b3" d="M 140 500 Q 160 430 175 420 Q 165 450 155 500 Z" />
+        <path class="blade b4" d="M 170 500 Q 185 410 195 390 Q 195 440 185 500 Z" />
+        <path class="blade b5" d="M 215 500 Q 205 410 205 385 Q 215 440 230 500 Z" />
+        <path class="blade b6" d="M 245 500 Q 240 430 230 415 Q 250 445 260 500 Z" />
+        <path class="blade b7" d="M 270 500 Q 290 410 310 395 Q 295 435 285 500 Z" />
+        <path class="blade b8" d="M 300 500 Q 330 440 350 430 Q 330 460 315 500 Z" />
+      </g>
+    </svg>
+  </div>
+</body>
+</html>

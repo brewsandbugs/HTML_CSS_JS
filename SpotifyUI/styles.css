@@ -1,0 +1,132 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+}
+
+/* Hide actual audio element since controls are purely custom */
+audio {
+    display: none;
+}
+
+/* Hidden checkbox to track play/pause toggle state */
+#play-toggle {
+    display: none;
+}
+
+/* Vinyl rotation animation when playing */
+@keyframes spinVinyl {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Progress bar fill animation when playing */
+@keyframes progressFill {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+/* Album art scale and vinyl pulse when playing */
+#play-toggle:checked ~ .player-container .album-art {
+    transform: scale(0.92);
+    box-shadow: 0 20px 30px rgba(0,0,0,0.6);
+}
+
+#play-toggle:checked ~ .player-container .vinyl-record {
+    animation: spinVinyl 6s linear infinite;
+    display: block;
+}
+
+/* Progress bar animation sync with song duration (e.g. 30s demo) */
+#play-toggle:checked ~ .player-container .progress-bar-fill {
+    animation: progressFill 30s linear forwards;
+}
+
+/* Play/Pause Button Icon switching */
+#play-toggle:not(:checked) ~ .player-container .play-icon {
+    display: block;
+}
+#play-toggle:not(:checked) ~ .player-container .pause-icon {
+    display: none;
+}
+
+#play-toggle:checked ~ .player-container .play-icon {
+    display: none;
+}
+#play-toggle:checked ~ .player-container .pause-icon {
+    display: block;
+}
+
+/* Precise smooth scrolling matching Raja's vocal delivery */
+@keyframes lyricScroll {
+    0%   { transform: translateY(120px); }  /* Line 1 */
+    12%  { transform: translateY(80px); }   /* Line 2 */
+    22%  { transform: translateY(40px); }   /* Line 3 */
+    34%  { transform: translateY(0px); }    /* Line 4 (Centered Active View) */
+    48%  { transform: translateY(-45px); }  /* Line 5 */
+    72%  { transform: translateY(-95px); }  /* Line 6 */
+    96%, 100% { transform: translateY(-145px); } /* Line 7 */
+}
+
+#play-toggle:checked ~ .player-container .lyrics-container {
+    animation: lyricScroll 12s linear forwards;
+}
+
+/* Word-by-word active tracking per line */
+@keyframes line1 { 
+    0% { color: #71717a; transform: scale(1); } 
+    0%, 9% { color: #1ed760; transform: scale(1.06); font-weight: 700; } 
+    12%, 100% { color: #71717a; transform: scale(1); } 
+}
+
+@keyframes line2 { 
+    0%, 10% { color: #71717a; transform: scale(1); } 
+    12%, 20% { color: #1ed760; transform: scale(1.06); font-weight: 700; } 
+    22%, 100% { color: #71717a; transform: scale(1); } 
+}
+
+@keyframes line3 { 
+    0%, 20% { color: #71717a; transform: scale(1); } 
+    22%, 32% { color: #1ed760; transform: scale(1.06); font-weight: 700; } 
+    34%, 100% { color: #71717a; transform: scale(1); } 
+}
+
+@keyframes line4 { 
+    0%, 32% { color: #71717a; transform: scale(1); } 
+    34%, 45% { color: #1ed760; transform: scale(1.06); font-weight: 700; } 
+    48%, 100% { color: #71717a; transform: scale(1); } 
+}
+
+@keyframes line5 { 
+    0%, 45% { color: #71717a; transform: scale(1); } 
+    48%, 68% { color: #1ed760; transform: scale(1.06); font-weight: 700; } 
+    72%, 100% { color: #71717a; transform: scale(1); } 
+}
+
+@keyframes line6 { 
+    0%, 68% { color: #71717a; transform: scale(1); } 
+    72%, 94% { color: #1ed760; transform: scale(1.06); font-weight: 700; } 
+    96%, 100% { color: #71717a; transform: scale(1); } 
+}
+
+@keyframes line7 { 
+    0%, 94% { color: #71717a; transform: scale(1); } 
+    96%, 100% { color: #1ed760; transform: scale(1.06); font-weight: 700; } 
+}
+
+/* Bind each line animation */
+#play-toggle:checked ~ .player-container .l-1 { animation: line1 30s linear forwards; }
+#play-toggle:checked ~ .player-container .l-2 { animation: line2 30s linear forwards; }
+#play-toggle:checked ~ .player-container .l-3 { animation: line3 30s linear forwards; }
+#play-toggle:checked ~ .player-container .l-4 { animation: line4 30s linear forwards; }
+#play-toggle:checked ~ .player-container .l-5 { animation: line5 30s linear forwards; }
+#play-toggle:checked ~ .player-container .l-6 { animation: line6 30s linear forwards; }
+#play-toggle:checked ~ .player-container .l-7 { animation: line7 30s linear forwards; }
+
+/* Custom Scrollbar for Spotify look */
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background: #404040;
+    border-radius: 4px;
+}
