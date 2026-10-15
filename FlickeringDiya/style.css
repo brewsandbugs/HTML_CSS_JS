@@ -1,0 +1,98 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: radial-gradient(circle, #1a1a2e 0%, #0f0f1a 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.diya-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Flame & Glow */
+.flame-container {
+    position: relative;
+    bottom: -15px;
+    z-index: 10;
+    animation: flicker 1s infinite alternate;
+}
+
+.flame {
+    width: 25px;
+    height: 45px;
+    background: linear-gradient(to top, #ff7700, #ffcc00, #ffffff);
+    box-shadow: 0 0 20px #ff9900, 0 0 40px #ff3300, 0 0 60px #ffcc00;
+    animation: burn 0.1s infinite alternate;
+    border-radius: 50% 50% 20% 20% / 60% 60% 40% 40%;
+}
+
+.wick {
+    width: 4px;
+    height: 10px;
+    background: #333;
+    margin: 0 auto;
+    border-radius: 2px;
+}
+
+/* Diya Base (Bowl) */
+.diya-bowl {
+    position: relative;
+    width: 200px;
+    height: 70px;
+    background: linear-gradient(135deg, #d35400, #b93d04, #872800);
+    border-radius: 0 0 100px 100px;
+    box-shadow: inset 0 -10px 15px rgba(0, 0, 0, 0.6), 
+                0 10px 25px rgba(255, 100, 0, 0.3);
+    border-top: 5px solid #e67e22;
+}
+
+/* Gold Rim Detail */
+.diya-bowl::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, #f39c12, #f1c40f, #f39c12);
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Diya Stand / Base */
+.diya-base {
+    width: 80px;
+    height: 15px;
+    background: linear-gradient(to right, #872800, #b93d04, #872800);
+    border-radius: 0 0 10px 10px;
+    margin: 0 auto;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+@keyframes flicker {
+    0% {
+        opacity: 0.9;
+        filter: drop-shadow(0 0 10px #ff9900);
+    }
+    100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 25px #ffcc00);
+    }
+}
+
+@keyframes burn {
+    0% {
+        transform: scale(1) rotate(-2deg);
+    }
+    100% {
+        transform: scale(1.05) rotate(2deg);
+    }
+}

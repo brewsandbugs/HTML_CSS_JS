@@ -1,0 +1,194 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #654ea3, #eaafc8);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+  perspective: 1000px; /* Essential for 3D depth */
+}
+
+.scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* THE CARD CONTAINER (Handles 3D Space and Flip) */
+.glass-card {
+  width: 340px;
+  height: 210px;
+  cursor: pointer;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Triggered when clicked */
+.glass-card.flipped {
+  transform: rotateY(180deg);
+}
+
+/* COMMON STYLES FOR BOTH SIDES (The Glassmorphism Magic) */
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden; /* Hides the back side when facing away */
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  
+  /* THE 3 LINES OF GLASSMORPHISM CSS */
+  background: rgba(255, 255, 255, 0.15);      /* Semi-transparent background */
+  backdrop-filter: blur(16px);                  /* Frosted glass blur effect */
+  -webkit-backdrop-filter: blur(16px);          /* Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.4);  /* Subtle glowing border */
+  
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+}
+
+/* FRONT SPECIFIC STYLES */
+.card-front {
+  z-index: 2;
+}
+
+.card-chip {
+  width: 45px;
+  height: 35px;
+  background: linear-gradient(135deg, #ffe066, #f59f00);
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(245, 159, 0, 0.5);
+}
+
+.card-number {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.label {
+  display: block;
+  font-size: 9px;
+  text-transform: uppercase;
+  opacity: 0.6;
+  letter-spacing: 1px;
+}
+
+.value {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+
+/* BACK SPECIFIC STYLES */
+.card-back {
+  transform: rotateY(180deg); /* Pre-rotate the back side */
+  padding: 20px 0;
+  justify-content: flex-start;
+}
+
+.magnetic-strip {
+  width: 100%;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.4);
+  margin-bottom: 15px;
+}
+
+.signature-section {
+  padding: 0 24px;
+}
+
+.signature-label {
+  font-size: 8px;
+  text-transform: uppercase;
+  opacity: 0.6;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.signature-box {
+  width: 100%;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+}
+
+.signature-text {
+  font-family: 'Brush Script MT', cursive, sans-serif;
+  color: #111;
+  font-size: 18px;
+  transform: rotate(-3deg);
+}
+
+.cvv-box{
+    background: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.cvv-box .label{
+    color: #666;
+    font-size: 7px;
+}
+
+.cvv-value{
+    color: #111;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.back-footer{
+    padding: 0 24px;
+    margin-top: auto;
+}
+
+.back-text{
+    font-size: 8px;
+    opacity: 0.5px;
+    line-height: 1.3px;
+}
+
+.hint{
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0%, 100%{
+        opacity: 0.6;
+    }
+    50%{
+        opacity: 1;
+    }
+}

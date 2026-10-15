@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTP Verification</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- OTP Input Card -->
+  <div class="card" id="otpCard">
+    <h2 id="cardTitle">OTP Verification</h2>
+    <p class="subtitle" id="cardSubtitle">Enter the 4-digit verification code sent to your device.</p>
+
+    <div class="otp-container" id="otpInputs">
+      <input type="text" maxlength="1" class="otp-input" autofocus />
+      <input type="text" maxlength="1" class="otp-input" />
+      <input type="text" maxlength="1" class="otp-input" />
+      <input type="text" maxlength="1" class="otp-input" />
+    </div>
+
+    <button id="verifyBtn" disabled>Verify Code</button>
+  </div>
+
+  <!-- Success Card -->
+  <div class="card hidden" id="successCard">
+    <div class="icon-circle">✓</div>
+    <span class="badge">VERIFIED</span>
+    <h2>Access Granted</h2>
+    <p class="subtitle">Welcome back. Redirecting to your vault...</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animated Subscribe Button</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="subscribe-container">
+    <button class="subscribe-btn" id="subscribeBtn">
+      <!-- Default State -->
+      <span class="default-state">
+        <svg class="yt-icon" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+        Subscribe
+      </span>
+      
+      <!-- Subscribed State -->
+      <span class="subscribed-state">
+        <svg class="bell-icon" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+        </svg>
+        Subscribed
+      </span>
+    </button>
+  </div>
+
+  <script>
+    const btn = document.getElementById('subscribeBtn');
+
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('subscribed');
+    });
+  </script>
+
+</body>
+</html>

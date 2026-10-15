@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Password Strength Checker</title>
+</head>
+<body>
+    <!-- container to hold the password stuff -->
+     <div class="card">
+        <h2>Password Strength 🔒</h2>      
+        
+        <!-- password entering block -->
+        <div class="input-container">
+            <input type="password" id="password" placeholder="Enter Password">
+            <button id="toggleBtn">SHOW</button>
+        </div>
+
+        <!-- password tracking bar -->
+        <div class="trackerContainer">
+            <div id="trackerBar"></div>
+        </div>
+
+        <!-- tracker label: weak/strong -->
+        <div class="strength-indicator">
+            Strength: <span id="strengthText"></span>
+        </div>
+
+        <!-- password rules -->
+         <ul class="requirements">
+            <li id="length">At least 8 characters</li>
+            <li id="number">Contains a number</li>
+            <li id="special">Contains a special character</li>
+            <li id="capital">Uppercase & Lowercase combination</li>
+         </ul>
+     </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

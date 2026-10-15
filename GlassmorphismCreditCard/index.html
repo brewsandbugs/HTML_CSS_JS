@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glassmorphism Credit Card with Flip Effect</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="scene">
+    <!-- Clickable card container that handles the 3D flip -->
+    <div class="glass-card" id="glassCard">
+      
+      <!-- FRONT OF THE CARD -->
+      <div class="card-face card-front">
+        <div class="card-chip"></div>
+        <div class="card-number">4532 •••• •••• 8892</div>
+        <div class="card-footer">
+          <div class="card-holder">
+            <span class="label">Card Holder</span>
+            <span class="value">Alex Morgan</span>
+          </div>
+          <div class="card-expires">
+            <span class="label">Expires</span>
+            <span class="value">09/28</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BACK OF THE CARD -->
+      <div class="card-face card-back">
+        <div class="magnetic-strip"></div>
+        <div class="signature-section">
+          <span class="signature-label">Authorized Signature</span>
+          <div class="signature-box">
+            <span class="signature-text">Alex Morgan</span>
+            <div class="cvv-box">
+              <span class="label">CVV</span>
+              <span class="cvv-value">482</span>
+            </div>
+          </div>
+        </div>
+        <div class="back-footer">
+          <p class="back-text">This card is property of NovaBank. If found, please return to any branch.</p>
+        </div>
+      </div>
+
+    </div>
+    
+    <p class="hint">Tap card to flip & reveal CVV ✨</p>
+  </div>
+
+  <script>
+    const card = document.getElementById('glassCard');
+    card.addEventListener('click', () => {
+      card.classList.toggle('flipped');
+    });
+  </script>
+</body>
+</html>
