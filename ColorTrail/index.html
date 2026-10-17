@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesmerizing Color Trail</title>
+    <!-- Tailwind CSS for sleek styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darker: '#060913',
+                        panelBg: 'rgba(15, 23, 42, 0.8)'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050811;
+            overflow: hidden;
+            touch-action: none;
+        }
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.78);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="text-slate-100 h-screen w-screen select-none relative">
+
+    <!-- Canvas for Color Trail Simulation -->
+    <canvas id="trailCanvas"></canvas>
+
+    <!-- Top Header / Title -->
+    <header class="absolute top-0 left-0 right-0 z-20 flex justify-between items-center p-4 md:p-6 pointer-events-none">
+        <div class="pointer-events-auto flex items-center space-x-3 glass-panel px-4 py-2.5 rounded-2xl shadow-2xl">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-pink-500 via-purple-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-pink-500/30">
+                <i class="fa-solid fa-paintbrush text-white text-sm"></i>
+            </div>
+            <div>
+                <h1 class="text-base font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Chromatic Trail</h1>
+                <p class="text-xs text-slate-400">Interactive Mouse-Following Color Studio</p>
+            </div>
+        </div>
+
+        <!-- Toggle Controls Button -->
+        <button id="toggleControlsBtn" class="pointer-events-auto glass-panel hover:bg-slate-800/80 active:scale-95 transition-all text-slate-200 px-4 py-2.5 rounded-2xl shadow-xl flex items-center space-x-2 text-sm font-medium border border-white/10">
+            <i class="fa-solid fa-sliders text-pink-400"></i>
+            <span class="hidden sm:inline">Trail Studio</span>
+        </button>
+    </header>
+
+    <!-- Control Panel -->
+    <div id="controlsPanel" class="absolute top-20 right-4 md:right-6 z-20 w-80 md:w-88 glass-panel p-5 rounded-3xl shadow-2xl transition-all duration-300 transform opacity-100 scale-100 flex flex-col space-y-4 max-h-[calc(100vh-100px)] overflow-y-auto">
+        <div class="flex justify-between items-center pb-2 border-b border-white/10">
+            <h2 class="font-semibold text-sm tracking-wide text-pink-300 uppercase flex items-center space-x-2">
+                <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+                <span>Trail Customizer</span>
+            </h2>
+            <button id="closeControls" class="text-slate-400 hover:text-white p-1 rounded-lg transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Trail Style Selector -->
+        <div class="space-y-1.5">
+            <label class="text-xs font-medium text-slate-300 flex justify-between items-center">
+                <span>Trail Particle Style</span>
+                <span id="styleLabel" class="text-pink-400 font-semibold text-[11px]">Glowing Orbs</span>
+            </label>
+            <div class="grid grid-cols-2 gap-1.5 p-1 bg-slate-900/60 rounded-xl border border-white/5">
+                <button data-style="orbs" class="style-btn py-1.5 text-xs font-medium rounded-lg bg-pink-600 text-white shadow transition-all">Glowing Orbs</button>
+                <button data-style="ribbon" class="style-btn py-1.5 text-xs font-medium rounded-lg text-slate-400 hover:text-white transition-all">Neon Ribbons</button>
+                <button data-style="bubbles" class="style-btn py-1.5 text-xs font-medium rounded-lg text-slate-400 hover:text-white transition-all">Rainbow Bubbles</button>
+                <button data-style="fireflies" class="style-btn py-1.5 text-xs font-medium rounded-lg text-slate-400 hover:text-white transition-all">Firefly Sparks</button>
+            </div>
+        </div>
+
+        <!-- Color Palette Mode -->
+        <div class="space-y-1.5">
+            <label class="text-xs font-medium text-slate-300">Color Spectrum Mode</label>
+            <select id="colorMode" class="w-full bg-slate-900/80 border border-white/10 text-slate-200 text-xs rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all">
+                <option value="rainbow">🌈 Smooth Rainbow Cycle</option>
+                <option value="electric">⚡ Electric Neon (Cyan / Magenta)</option>
+                <option value="pastel">🌸 Pastel Dream (Soft Lavenders & Peaches)</option>
+                <option value="fire">🔥 Solar Fire (Gold & Crimson)</option>
+                <option value="aurora">🌌 Aurora Borealis (Emerald & Indigo)</option>
+            </select>
+        </div>
+
+        <!-- Color Cycle Speed -->
+        <div class="space-y-1.5">
+            <div class="flex justify-between text-xs font-medium text-slate-300">
+                <span>Color Shift Speed</span>
+                <span id="speedVal" class="text-pink-400 font-semibold">2.0</span>
+            </div>
+            <input id="speedSlider" type="range" min="0.5" max="8.0" step="0.5" value="2.0" class="w-full accent-pink-500 bg-slate-800 rounded-lg h-1.5 cursor-pointer">
+        </div>
+
+        <!-- Particle Size Slider -->
+        <div class="space-y-1.5">
+            <div class="flex justify-between text-xs font-medium text-slate-300">
+                <span>Particle Size</span>
+                <span id="sizeVal" class="text-cyan-400 font-semibold">12px</span>
+            </div>
+            <input id="sizeSlider" type="range" min="4" max="30" step="1" value="12" class="w-full accent-cyan-400 bg-slate-800 rounded-lg h-1.5 cursor-pointer">
+        </div>
+
+        <!-- Fade / Decay Speed -->
+        <div class="space-y-1.5">
+            <div class="flex justify-between text-xs font-medium text-slate-300">
+                <span>Trail Persistence (Fade)</span>
+                <span id="fadeVal" class="text-indigo-400 font-semibold">Medium</span>
+            </div>
+            <input id="fadeSlider" type="range" min="0.01" max="0.08" step="0.005" value="0.03" class="w-full accent-indigo-500 bg-slate-800 rounded-lg h-1.5 cursor-pointer">
+        </div>
+
+        <!-- Auto Orbiting Mode Toggle -->
+        <div class="space-y-2 bg-slate-900/60 p-3 rounded-2xl border border-white/5">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                    <i class="fa-solid fa-atom text-cyan-400"></i> Auto-Orbiting Trail
+                </span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="orbitToggle" class="sr-only peer">
+                    <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-pink-600"></div>
+                </label>
+            </div>
+            <p class="text-[11px] text-slate-400 leading-tight">Generates a hypnotic orbiting color pattern when your mouse is idle or moves slowly.</p>
+        </div>
+
+        <!-- Clear Screen & Burst Action -->
+        <div class="pt-2 border-t border-white/10 grid grid-cols-2 gap-2">
+            <button id="burstBtn" class="flex items-center justify-center space-x-2 py-2 px-3 rounded-xl bg-pink-600/20 hover:bg-pink-600/30 text-xs font-medium border border-pink-500/30 transition-all text-pink-300">
+                <i class="fa-solid fa-burst text-pink-400"></i>
+                <span>Burst Effect</span>
+            </button>
+            <button id="clearBtn" class="flex items-center justify-center space-x-2 py-2 px-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 text-xs font-medium border border-white/5 transition-all text-slate-300">
+                <i class="fa-solid fa-broom text-cyan-400"></i>
+                <span>Clear Canvas</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Quick Instructions Banner -->
+    <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-10 pointer-events-none hidden sm:flex items-center space-x-2 glass-panel px-4 py-2 rounded-full text-xs text-slate-300 shadow-xl border border-white/10">
+        <span class="w-2 h-2 rounded-full bg-pink-500 animate-ping"></span>
+        <span>Move your mouse to leave a vibrant color trail • Click anywhere for particle bursts</span>
+    </div>
+
+    <!-- Notification Message Modal -->
+    <div id="messageModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-panel p-6 rounded-3xl max-w-sm w-full mx-4 shadow-2xl border border-white/10 text-center transform scale-95 transition-transform duration-300" id="modalContainer">
+            <div id="modalIcon" class="w-12 h-12 rounded-2xl bg-pink-500/20 text-pink-400 flex items-center justify-center mx-auto mb-3 text-lg">
+                <i class="fa-solid fa-sparkles"></i>
+            </div>
+            <h3 id="modalTitle" class="text-base font-semibold text-white mb-1">Notice</h3>
+            <p id="modalMessage" class="text-xs text-slate-300 mb-5 leading-relaxed">Notification text here.</p>
+            <button id="modalCloseBtn" class="w-full py-2.5 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-medium text-xs shadow-lg shadow-pink-600/30 transition-all">Got it</button>
+        </div>
+    </div>
+
+    <!-- Main JavaScript Logic -->
+    <script>
+        // Custom message box helper (No alert/confirm used)
+        function showNotification(title, message) {
+            const modal = document.getElementById('messageModal');
+            const modalContainer = document.getElementById('modalContainer');
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContainer.classList.remove('scale-95');
+                modalContainer.classList.add('scale-100');
+            }, 10);
+        }
+
+        document.getElementById('modalCloseBtn').addEventListener('click', () => {
+            const modal = document.getElementById('messageModal');
+            const modalContainer = document.getElementById('modalContainer');
+            modal.classList.add('opacity-0');
+            modalContainer.classList.remove('scale-100');
+            modalContainer.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        });
+
+        // Canvas Setup
+        const canvas = document.getElementById('trailCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        // Application State
+        const state = {
+            style: 'orbs',          // orbs, ribbon, bubbles, fireflies
+            colorMode: 'rainbow',   // rainbow, electric, pastel, fire, aurora
+            speed: 2.0,             // color shift speed
+            size: 12,               // particle size
+            fade: 0.03,             // canvas clear opacity
+            orbit: false,           // auto orbit mode
+            currentHue: 0,
+            mouse: { x: width / 2, y: height / 2, active: false, lastX: width / 2, lastY: height / 2 },
+            orbitAngle: 0
+        };
+
+        // Palette definitions
+        const palettes = {
+            electric: ['#00f0ff', '#ff007f', '#7000ff', '#39ff14'],
+            pastel: ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'],
+            fire: ['#ff4500', '#ff8c00', '#ffd700', '#ff2200'],
+            aurora: ['#00ffcc', '#0099ff', '#7928ca', '#ff0080']
+        };
+
+        function getColor(hueOffset = 0) {
+            const hue = (state.currentHue + hueOffset + 360) % 360;
+            if (state.colorMode === 'rainbow') {
+                return `hsl(${hue}, 100%, 60%)`;
+            }
+
+            const p = palettes[state.colorMode];
+            if (!p) return `hsl(${hue}, 100%, 60%)`;
+
+            const index = Math.floor((hue / 360) * p.length) % p.length;
+            return p[index];
+        }
+
+        // Particle Class for Color Trail
+        class TrailParticle {
+            constructor(x, y, style, size, color) {
+                this.x = x;
+                this.y = y;
+                this.style = style;
+                this.size = size * (Math.random() * 0.4 + 0.8);
+                this.color = color;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.02 + 0.015;
+
+                // Physics for dynamic drift
+                const angle = Math.random() * Math.PI * 2;
+                const speed = style === 'fireflies' ? Math.random() * 1.5 + 0.5 : Math.random() * 2;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.wobble = Math.random() * 10;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= this.decay;
+                this.wobble += 0.1;
+
+                if (this.style === 'fireflies') {
+                    this.x += Math.sin(this.wobble) * 0.8;
+                    this.y += Math.cos(this.wobble) * 0.8;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, this.alpha);
+                ctx.fillStyle = this.color;
+                ctx.strokeStyle = this.color;
+
+                if (this.style === 'orbs') {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.shadowBlur = 18;
+                    ctx.shadowColor = this.color;
+                    ctx.fill();
+                } else if (this.style === 'ribbon') {
+                    ctx.lineWidth = this.size * 0.8;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * 0.6, 0, Math.PI * 2);
+                    ctx.shadowBlur = 12;
+                    ctx.shadowColor = this.color;
+                    ctx.fill();
+                } else if (this.style === 'bubbles') {
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = this.color;
+                    ctx.stroke();
+                } else if (this.style === 'fireflies') {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * 0.5, 0, Math.PI * 2);
+                    ctx.shadowBlur = 20;
+                    ctx.shadowColor = this.color;
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fill();
+                }
+
+                ctx.restore();
+            }
+        }
+
+        let particles = [];
+
+        // Mouse & Touch Tracking
+        window.addEventListener('mousemove', (e) => {
+            state.mouse.x = e.clientX;
+            state.mouse.y = e.clientY;
+            state.mouse.active = true;
+
+            // Emit particles along mouse path
+            emitParticles(state.mouse.x, state.mouse.y, 2);
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                const touch = e.touches[0];
+                state.mouse.x = touch.clientX;
+                state.mouse.y = touch.clientY;
+                emitParticles(state.mouse.x, state.mouse.y, 2);
+            }
+        }, { passive: true });
+
+        // Click to Burst
+        window.addEventListener('click', (e) => {
+            if (e.target.closest('#controlsPanel') || e.target.closest('#toggleControlsBtn')) return;
+            createBurst(e.clientX, e.clientY);
+        });
+
+        window.addEventListener('touchstart', (e) => {
+            if (e.target.closest('#controlsPanel') || e.target.closest('#toggleControlsBtn')) return;
+            if (e.touches.length > 0) {
+                const touch = e.touches[0];
+                createBurst(touch.clientX, touch.clientY);
+            }
+        }, { passive: true });
+
+        function emitParticles(x, y, count) {
+            for (let i = 0; i < count; i++) {
+                const color = getColor(i * 15);
+                particles.push(new TrailParticle(x + (Math.random() - 0.5) * 10, y + (Math.random() - 0.5) * 10, state.style, state.size, color));
+            }
+        }
+
+        function createBurst(x, y) {
+            for (let i = 0; i < 45; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 6 + 2;
+                const p = new TrailParticle(x, y, state.style, state.size * 1.2, getColor(i * 8));
+                p.vx = Math.cos(angle) * speed;
+                p.vy = Math.sin(angle) * speed;
+                p.decay = Math.random() * 0.02 + 0.01;
+                particles.push(p);
+            }
+        }
+
+        // Animation Loop
+        function animate() {
+            // Increment color hue
+            state.currentHue = (state.currentHue + state.speed) % 360;
+
+            // Handle auto-orbiting mode
+            if (state.orbit) {
+                state.orbitAngle += 0.04;
+                const radius = 120 + Math.sin(state.orbitAngle * 2) * 40;
+                const centerX = width / 2 + Math.cos(state.orbitAngle) * radius * 1.5;
+                const centerY = height / 2 + Math.sin(state.orbitAngle * 1.2) * radius;
+                emitParticles(centerX, centerY, 3);
+            }
+
+            // Clear screen with fade opacity
+            ctx.fillStyle = `rgba(5, 8, 17, ${state.fade})`;
+            ctx.fillRect(0, 0, width, height);
+
+            // Update & render particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.update();
+                p.draw();
+
+                if (p.alpha <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // Controls Panel Interaction
+        const controlsPanel = document.getElementById('controlsPanel');
+        const toggleControlsBtn = document.getElementById('toggleControlsBtn');
+        const closeControlsBtn = document.getElementById('closeControls');
+
+        toggleControlsBtn.addEventListener('click', () => {
+            controlsPanel.classList.toggle('opacity-0');
+            controlsPanel.classList.toggle('pointer-events-none');
+            controlsPanel.classList.toggle('scale-95');
+        });
+
+        closeControlsBtn.addEventListener('click', () => {
+            controlsPanel.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+        });
+
+        // Style Selector Buttons
+        const styleBtns = document.querySelectorAll('.style-btn');
+        const styleLabel = document.getElementById('styleLabel');
+        styleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                styleBtns.forEach(b => {
+                    b.classList.remove('bg-pink-600', 'text-white', 'shadow');
+                    b.classList.add('text-slate-400');
+                });
+                btn.classList.add('bg-pink-600', 'text-white', 'shadow');
+                btn.classList.remove('text-slate-400');
+
+                state.style = btn.getAttribute('data-style');
+                styleLabel.textContent = btn.textContent;
+            });
+        });
+
+        // Color Mode Select
+        document.getElementById('colorMode').addEventListener('change', (e) => {
+            state.colorMode = e.target.value;
+        });
+
+        // Speed Slider
+        const speedSlider = document.getElementById('speedSlider');
+        const speedVal = document.getElementById('speedVal');
+        speedSlider.addEventListener('input', (e) => {
+            state.speed = parseFloat(e.target.value);
+            speedVal.textContent = state.speed.toFixed(1);
+        });
+
+        // Size Slider
+        const sizeSlider = document.getElementById('sizeSlider');
+        const sizeVal = document.getElementById('sizeVal');
+        sizeSlider.addEventListener('input', (e) => {
+            state.size = parseInt(e.target.value);
+            sizeVal.textContent = `${state.size}px`;
+        });
+
+        // Fade Slider
+        const fadeSlider = document.getElementById('fadeSlider');
+        const fadeVal = document.getElementById('fadeVal');
+        fadeSlider.addEventListener('input', (e) => {
+            state.fade = parseFloat(e.target.value);
+            fadeVal.textContent = state.fade > 0.05 ? 'Fast' : state.fade > 0.025 ? 'Medium' : 'Long';
+        });
+
+        // Orbit Toggle
+        document.getElementById('orbitToggle').addEventListener('change', (e) => {
+            state.orbit = e.target.checked;
+            if (state.orbit) {
+                showNotification('Auto-Orbit Enabled', 'Hypnotic orbiting color trails are now active across the screen!');
+            }
+        });
+
+        // Burst Button
+        document.getElementById('burstBtn').addEventListener('click', () => {
+            createBurst(width / 2, height / 2);
+        });
+
+        // Clear Button
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            particles = [];
+            ctx.clearRect(0, 0, width, height);
+        });
+
+        // Initialize on load
+        window.onload = function () {
+            // Initial greeting burst
+            setTimeout(() => {
+                createBurst(width / 2, height / 2);
+            }, 300);
+
+            animate();
+        };
+    </script>
+</body>
+</html>
