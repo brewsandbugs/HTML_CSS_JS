@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassmorphism Flip Auth Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Checkbox toggle to handle the 3D card rotation -->
+        <input type="checkbox" id="flip-checkbox">
+
+        <div class="card-3d-wrapper">
+            
+            <!-- FRONT: Login Form -->
+            <div class="card-face card-front">
+                <h2>Welcome Back</h2>
+                <form>
+                    <div class="input-box">
+                        <input type="email" required placeholder=" ">
+                        <label>Email</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" required placeholder=" ">
+                        <label>Password</label>
+                    </div>
+                    <button type="submit" class="btn">Log In</button>
+                </form>
+                <p class="switch-text">
+                    Don't have an account? <label for="flip-checkbox" class="flip-btn">Sign Up</label>
+                </p>
+            </div>
+
+            <!-- BACK: Sign Up Form -->
+            <div class="card-face card-back">
+                <h2>Create Account</h2>
+                <form>
+                    <div class="input-box">
+                        <input type="text" required placeholder=" ">
+                        <label>Full Name</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" required placeholder=" ">
+                        <label>Email</label>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" required placeholder=" ">
+                        <label>Password</label>
+                    </div>
+                    <button type="submit" class="btn">Sign Up</button>
+                </form>
+                <p class="switch-text">
+                    Already have an account? <label for="flip-checkbox" class="flip-btn">Log In</label>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
